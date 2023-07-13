@@ -1,6 +1,7 @@
 package com.keepcoding.dragonballfinal
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             btnLogin.setOnClickListener {
                 if (viewModel.isUserValid(etUser.text.toString()) && viewModel.isPassValid(etPass.text.toString())) {
                     Toast.makeText(this@MainActivity, "Login Correcto", Toast.LENGTH_LONG).show()
+                    abrirHeroListActivity()
                     if (switchRememberUser.isChecked) guardarLoginEnPreferencias(etUser.text.toString(), etPass.text.toString())
                 } else
                     Toast.makeText(this@MainActivity, "Login Fallido", Toast.LENGTH_LONG).show()
@@ -81,5 +83,11 @@ class MainActivity : AppCompatActivity() {
                     switchRememberUser.isChecked = true
             }
         }
+    }
+
+    private fun abrirHeroListActivity() {
+        val intent = Intent(this, HeroListActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
