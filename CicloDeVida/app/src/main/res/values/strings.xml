@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CicloDeVida</string>
+    <string name="toast_execution_number">Esta app Ha sido ejecutada %d veces</string>
+
+</resources>

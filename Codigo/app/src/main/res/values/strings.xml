@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">DragonBallClase</string>
+    <string name="titulo_ej_google">Hi! I\'m the title!</string>
+    <string name="name">Name</string>
+
 </resources>
