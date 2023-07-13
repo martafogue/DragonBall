@@ -17,6 +17,7 @@ class MainActivityViewModelTest {
             assertFalse(isUserValid("1234"))
             assertFalse(isUserValid("1234@"))
             assertFalse(isUserValid("1234."))
+            assertFalse(isUserValid(""))
         }
     }
 
@@ -27,6 +28,7 @@ class MainActivityViewModelTest {
             assertTrue(isPassValid("abcd"))
             assertFalse(isPassValid("abc"))
             assertFalse(isPassValid("123"))
+            assertFalse(isPassValid(""))
         }
     }
 }
