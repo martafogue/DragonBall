@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import com.keepcoding.dragonballfinal.databinding.ActivityMainBinding
 
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     private val userTag = "USER_TAG"
     private val passTag = "PASS_TAG"
 
+    private val viewModel : MainActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding =  ActivityMainBinding.inflate(layoutInflater)
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             btnLogin.setOnClickListener {
-                if (etUser.text.contains("@") && etUser.text.contains(".") && etPass.text.length >= 4) {
+                if (viewModel.isUserValid(etUser.text.toString()) && viewModel.isPassValid(etPass.text.toString())) {
                     Toast.makeText(this@MainActivity, "Login Correcto", Toast.LENGTH_LONG).show()
                     if (switchRememberUser.isChecked) guardarLoginEnPreferencias(etUser.text.toString(), etPass.text.toString())
                 } else
