@@ -8,7 +8,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.lifecycleScope
 import com.keepcoding.dragonballfinal.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             btnLogin.setOnClickListener {
                 if (viewModel.isUserValid(etUser.text.toString()) && viewModel.isPassValid(etPass.text.toString())) {
                     Toast.makeText(this@MainActivity, "Login Correcto", Toast.LENGTH_LONG).show()
-                    abrirHeroListActivity()
+                    lanzarLogin(etUser.text.toString(), etPass.text.toString())
                     if (switchRememberUser.isChecked) guardarLoginEnPreferencias(etUser.text.toString(), etPass.text.toString())
                 } else
                     Toast.makeText(this@MainActivity, "Login Fallido", Toast.LENGTH_LONG).show()
@@ -60,7 +64,6 @@ class MainActivity : AppCompatActivity() {
                 if (!isChecked) borrarPreferencias()
             }
         }
-        Toast.makeText(this, "Login Fallido", Toast.LENGTH_LONG).show()
     }
 
     private fun borrarPreferencias() {
@@ -81,6 +84,20 @@ class MainActivity : AppCompatActivity() {
                 etPass.setText(getString(passTag, ""))
                 if (etPass.text.isNotEmpty() && etUser.text.isNotEmpty())
                     switchRememberUser.isChecked = true
+            }
+        }
+    }
+
+    private fun lanzarLogin(user: String, pass: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val state = viewModel.loguear(user, pass)
+            when(state) {
+                is MainActivityViewModel.LoginState.OnSuccess -> abrirHeroListActivity()
+                is MainActivityViewModel.LoginState.OnError -> {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainActivity, state.message, Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }
