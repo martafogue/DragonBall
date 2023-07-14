@@ -10,4 +10,7 @@ class MainActivityViewModel : ViewModel() {
     fun isUserValid(user: String) = user.contains("@") && user.contains(".")
 
     fun isPassValid(pass: String) = pass.length >= 4
+
+
 }
+
