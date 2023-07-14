@@ -7,19 +7,31 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.keepcoding.dragonballfinal.databinding.ItemHeroBinding
 
-class HeroAdapter: RecyclerView.Adapter<HeroAdapter.HeroViewHolder>() {
+class HeroAdapter(val callback: HeroAdapterInterface): RecyclerView.Adapter<HeroAdapter.HeroViewHolder>() {
 
-    class HeroViewHolder(val binding: ItemHeroBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(nombre: String, position: Int) {
-            binding.tvName.text = nombre
-            val bgColorId = if (position % 2 == 0) R.color.dark_orange else R.color.orange
-            binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, bgColorId))
-
-        }
+    interface HeroAdapterInterface {
+        fun abrirDetallesHeroeActivity(nombre: String)
     }
 
-    var list = List(100) {
-        "Goku $it"
+    private var list = mutableListOf<String>()
+
+    class HeroViewHolder(val binding: ItemHeroBinding,val callback: HeroAdapterInterface): RecyclerView.ViewHolder(binding.root) {
+        fun bind(nombre: String, position: Int) {
+            with(binding) {
+                tvName.text = nombre
+                val bgColorId = if (position % 2 == 0) R.color.dark_orange else R.color.orange
+                root.setBackgroundColor(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        bgColorId
+                    )
+                )
+                root.setOnClickListener {
+                    Toast.makeText(root.context, "Se ha pulsado sobre $nombre", Toast.LENGTH_LONG).show()
+                    callback.abrirDetallesHeroeActivity(nombre)
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -32,10 +44,20 @@ class HeroAdapter: RecyclerView.Adapter<HeroAdapter.HeroViewHolder>() {
             parent,
             false
         )
-        return HeroViewHolder(binding)
+        return HeroViewHolder(binding, callback)
     }
 
     override fun onBindViewHolder(holder: HeroViewHolder, position: Int) {
         holder.bind(list[position], position)
+    }
+
+    fun ponerListaHeroes(listHero : List<String>) {
+        list = listHero.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun borrarTodo() {
+        list.clear()
+        notifyDataSetChanged()
     }
 }
