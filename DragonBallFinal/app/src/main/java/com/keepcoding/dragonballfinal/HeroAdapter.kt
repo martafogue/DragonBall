@@ -13,12 +13,12 @@ class HeroAdapter(val callback: HeroAdapterInterface): RecyclerView.Adapter<Hero
         fun abrirDetallesHeroeActivity(nombre: String)
     }
 
-    private var list = mutableListOf<String>()
+    private var list = mutableListOf<HeroListActivityViewModel.Hero>()
 
     class HeroViewHolder(val binding: ItemHeroBinding,val callback: HeroAdapterInterface): RecyclerView.ViewHolder(binding.root) {
-        fun bind(nombre: String, position: Int) {
+        fun bind(hero: HeroListActivityViewModel.Hero, position: Int) {
             with(binding) {
-                tvName.text = nombre
+                tvName.text = hero.nombre
                 val bgColorId = if (position % 2 == 0) R.color.dark_orange else R.color.orange
                 root.setBackgroundColor(
                     ContextCompat.getColor(
@@ -27,8 +27,8 @@ class HeroAdapter(val callback: HeroAdapterInterface): RecyclerView.Adapter<Hero
                     )
                 )
                 root.setOnClickListener {
-                    Toast.makeText(root.context, "Se ha pulsado sobre $nombre", Toast.LENGTH_LONG).show()
-                    callback.abrirDetallesHeroeActivity(nombre)
+                    Toast.makeText(root.context, "Se ha pulsado sobre $hero", Toast.LENGTH_LONG).show()
+                    callback.abrirDetallesHeroeActivity(hero.nombre)
                 }
             }
         }
@@ -51,7 +51,7 @@ class HeroAdapter(val callback: HeroAdapterInterface): RecyclerView.Adapter<Hero
         holder.bind(list[position], position)
     }
 
-    fun ponerListaHeroes(listHero : List<String>) {
+    fun ponerListaHeroes(listHero : List<HeroListActivityViewModel.Hero>) {
         list = listHero.toMutableList()
         notifyDataSetChanged()
     }

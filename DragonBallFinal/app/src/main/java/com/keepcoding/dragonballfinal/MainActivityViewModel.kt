@@ -32,7 +32,7 @@ class MainActivityViewModel : ViewModel() {
         val response = call.execute()
         if (response.isSuccessful)
             response.body?.let {
-                token = it.toString()
+                token = it.string()
                 return LoginState.OnSuccess
             } ?: return LoginState.OnError("No se ha recibido ningún token")
         else
