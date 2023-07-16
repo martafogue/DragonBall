@@ -12,11 +12,9 @@ var token = ""
 
 class MainActivityViewModel : ViewModel() {
 
-
     fun isUserValid(user: String) = user.contains("@") && user.contains(".")
 
     fun isPassValid(pass: String) = pass.length >= 4
-
 
     suspend fun loguear(user: String, pass: String): LoginState {
         val client = OkHttpClient()

@@ -16,17 +16,23 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
+    //binding: xa acceder a los elementos del layout sin tener que referenciarlos con:
+    // var t = findViewById<TextView>(R.id.tvHellow)
+    //var q va a tener valor pero q aún no se lo puedo dar
     private lateinit var binding : ActivityMainBinding
     private val userTag = "USER_TAG"
     private val passTag = "PASS_TAG"
-
+    //creamos variable de tipo viewModel
     private val viewModel : MainActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding =  ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //con with entramos en el binding, así q ya no hace falta llamarle to_do el rato
+        //pero dentro del binding el this ya no es la activity sino el binding
         with(binding) {
+            //aunque llamemos a otra activity sigue ejecutándose el código de esta
             cargarLoginDePreferencias()
             etUser.doAfterTextChanged { editable ->
                 editable?.let {
@@ -103,8 +109,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun abrirHeroListActivity() {
+        //creamos un intent para cambiar de activity
+        //al intent le pasamos a qué clase queremos ir y desde dónde
         val intent = Intent(this, HeroListActivity::class.java)
         startActivity(intent)
+        //xa terminar la actividad actual.
+        //Así si dan al botón volver no vuelve a abrir esta pantalla (login)
         finish()
     }
 }

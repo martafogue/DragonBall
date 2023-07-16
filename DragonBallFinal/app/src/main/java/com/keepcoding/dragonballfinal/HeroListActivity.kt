@@ -22,11 +22,12 @@ class HeroListActivity : AppCompatActivity(), HeroAdapter.HeroAdapterInterface {
         binding = ActivityHeroListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // Ponerle el adapter
-
+        //accedemos al recicled view y le ponemos el adapter que hemos creado (la clase HeroAdapter)
         val adapter = HeroAdapter(this)
         binding.rvHeroes.adapter = adapter
         // Decirle como mostrarlos (Vertical, en cuadricula, etc...)
         binding.rvHeroes.layoutManager = LinearLayoutManager(this)
+        //le asignamos la lista de elementos para rellenar el recycled view
         lifecycleScope.launch(Dispatchers.IO) {
             val state = viewModel.descargarListaHerores()
             when (state) {
